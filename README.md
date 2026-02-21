@@ -20,18 +20,7 @@ chmod +x ~/.agents/skills/approval-chime/scripts/chime.sh
 ```json
 {
   "hooks": {
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.agents/skills/approval-chime/scripts/chime.sh"
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
+    "PermissionRequest": [
       {
         "matcher": "",
         "hooks": [
@@ -69,8 +58,7 @@ Edit `COOLDOWN_SECONDS` in `scripts/chime.sh`. Default is 5 seconds.
 
 ## How it works
 
-- `PreToolUse` fires before every tool call, catching permission prompts
-- `Notification` fires when Claude needs your attention
+- `PermissionRequest` fires only when the user is shown a permission dialog
 - The script checks a lockfile timestamp to debounce rapid-fire notifications
 - Sound plays in the background so it doesn't block Claude
 
@@ -81,7 +69,7 @@ Edit `COOLDOWN_SECONDS` in `scripts/chime.sh`. Default is 5 seconds.
 
 ## Uninstall
 
-1. Remove the `Notification` and `PreToolUse` hooks from `~/.claude/settings.json`
+1. Remove the `PermissionRequest` hook from `~/.claude/settings.json`
 2. Delete `~/.agents/skills/approval-chime/`
 
 ## License
