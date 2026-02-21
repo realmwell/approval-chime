@@ -31,12 +31,27 @@ Add the following hook to your Claude Code settings file (`~/.claude/settings.js
           }
         ]
       }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.agents/skills/approval-chime/scripts/chime.sh"
+          }
+        ]
+      }
     ]
   }
 }
 ```
 
-The `Notification` hook fires when Claude needs the user's attention (e.g., permission prompts, questions). The empty `matcher` means it matches all notification types.
+Two hooks are used to cover all approval scenarios:
+- **`PreToolUse`** — fires before every tool call, catching permission prompts
+- **`Notification`** — fires when Claude sends a notification needing attention
+
+The debounce in the script ensures only one chime plays even if both hooks fire.
 
 ## Configuration
 
@@ -73,6 +88,6 @@ Edit the `COOLDOWN_SECONDS` variable in `scripts/chime.sh`. Default is 5 seconds
 
 ## Uninstall
 
-1. Remove the `Notification` hook entry from your Claude Code settings
+1. Remove the `Notification` and `PreToolUse` hook entries from your Claude Code settings
 2. Delete the `~/.agents/skills/approval-chime/` directory
 3. Optionally remove `/tmp/claude-approval-chime.lock`
